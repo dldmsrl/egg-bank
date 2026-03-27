@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>계란 은행 — 신선한 계란 직배송</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ee;
+    --warm-white: #fffdf7;
+    --yolk: #e8a020;
+    --yolk-dark: #c4821a;
+    --yolk-light: #fef3d8;
+    --shell: #d4a86a;
+    --shell-light: #f5e8d0;
+    --brown: #4a2e0e;
+    --brown-mid: #7a4f22;
+    --text: #2d1f0e;
+    --text-mid: #6b4c2a;
+    --text-light: #a07a50;
+    --border: #e8d5b5;
+    --success: #3a7d44;
+    --danger: #c0392b;
+    --shadow: 0 4px 20px rgba(74,46,14,0.1);
+    --shadow-lg: 0 8px 40px rgba(74,46,14,0.15);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fdf3dc 0%, #f5e6c8 50%, #eeddb0 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  #login-screen::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,160,32,0.15) 0%, transparent 70%);
+    top: -200px; right: -200px;
+    border-radius: 50%;
+  }
+  #login-screen::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(212,168,106,0.2) 0%, transparent 70%);
+    bottom: -100px; left: -100px;
+    border-radius: 50%;
+  }
+  .login-box {
+    background: var(--warm-white);
+    border-radius: 24px;
+    padding: 48px 40px;
+    width: 400px;
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(212,168,106,0.3);
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.6s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  .login-logo {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .login-egg {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 8px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .login-logo h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--brown);
+    letter-spacing: -1px;
+  }
+  .login-logo p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+  .login-tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .login-tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    transition: all 0.2s;
+  }
+  .login-tab.active {
+    background: var(--yolk);
+    color: white;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+    background: var(--warm-white);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--yolk);
+  }
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--yolk);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: -0.3px;
+  }
+  .btn-primary:hover { background: var(--yolk-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(232,160,32,0.4); }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* ── MAIN APP ── */
+  #main-app { display: none; }
+  .topbar {
+    background: var(--brown);
+    color: white;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  .topbar-brand {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .user-greeting {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+  }
+  .user-greeting span { color: #ffd580; font-weight: 600; }
+  .cart-trigger {
+    background: var(--yolk);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .cart-trigger:hover { background: var(--yolk-dark); }
+  .cart-badge {
+    background: white;
+    color: var(--yolk-dark);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .logout-btn {
+    background: rgba(255,255,255,0.12);
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .logout-btn:hover { background: rgba(255,255,255,0.22); color: white; }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .nav-tab.active { color: var(--yolk-dark); border-bottom-color: var(--yolk); }
+  .nav-tab:hover { color: var(--brown-mid); }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 24px; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; animation: fadeUp 0.4s ease; }
+
+  /* ── SHOP PAGE ── */
+  .shop-banner {
+    background: linear-gradient(135deg, var(--brown) 0%, var(--brown-mid) 100%);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 28px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+  }
+  .shop-banner::after {
+    content: '🥚';
+    position: absolute;
+    right: 32px;
+    font-size: 80px;
+    opacity: 0.2;
+  }
+  .shop-banner h2 { font-family: 'Noto Serif KR', serif; font-size: 24px; margin-bottom: 8px; }
+  .shop-banner p { font-size: 14px; opacity: 0.8; }
+  .perks { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+  .perk { background: rgba(255,255,255,0.12); border-radius: 8px; padding: 6px 12px; font-size: 12px; }
+
+  .category-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .cat-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    color: var(--text-mid);
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .cat-btn.active, .cat-btn:hover {
+    background: var(--yolk);
+    color: white;
+    border-color: var(--yolk);
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .product-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .product-img {
+    height: 120px;
+    background: var(--yolk-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    position: relative;
+  }
+  .product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+  }
+  .badge-hot { background: #c0392b; color: white; }
+  .badge-new { background: var(--success); color: white; }
+  .badge-sale { background: var(--yolk); color: white; }
+  .badge-organic { background: #2e7d32; color: white; }
+  .product-info { padding: 14px; }
+  .product-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--text); }
+  .product-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; margin-bottom: 10px; }
+  .product-stock { font-size: 11px; color: var(--text-light); margin-bottom: 8px; }
+  .product-stock.low { color: #e67e22; font-weight: 500; }
+  .product-stock.out { color: var(--danger); font-weight: 500; }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price { font-size: 17px; font-weight: 700; color: var(--yolk-dark); }
+  .product-price sub { font-size: 11px; color: var(--text-light); font-weight: 400; margin-left: 2px; }
+  .add-cart-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--yolk);
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-weight: 300;
+  }
+  .add-cart-btn:hover { background: var(--yolk-dark); transform: scale(1.1); }
+  .add-cart-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+  /* ── ADMIN PAGE ── */
+  .admin-notice {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #8a6d00;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--brown);
+  }
+  .btn-sm {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-yolk { background: var(--yolk); color: white; }
+  .btn-yolk:hover { background: var(--yolk-dark); }
+  .btn-danger { background: #fee; color: var(--danger); border: 1px solid #fcc; }
+  .btn-danger:hover { background: #fdd; }
+  .btn-outline { background: white; color: var(--text-mid); border: 1px solid var(--border); }
+  .btn-outline:hover { background: var(--cream); }
+
+  .admin-table {
+    width: 100%;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 28px;
+  }
+  .admin-table th {
+    background: var(--cream);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .admin-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .admin-table tr:last-child td { border-bottom: none; }
+  .admin-table tr:hover td { background: var(--cream); }
+  .stock-input {
+    width: 80px;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .stock-input:focus { outline: none; border-color: var(--yolk); }
+
+  .add-product-form {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ── CART PAGE ── */
+  .cart-container { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+  @media (max-width: 768px) { .cart-container { grid-template-columns: 1fr; } }
+  .cart-items-box {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .cart-items-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--brown);
+  }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .cart-item:last-child { border-bottom: none; }
+  .cart-item:hover { background: var(--cream); }
+  .cart-item-emoji {
+    width: 52px; height: 52px;
+    background: var(--yolk-light);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .cart-item-details { flex: 1; }
+  .cart-item-name { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+  .cart-item-unit { font-size: 12px; color: var(--text-light); }
+  .qty-controls { display: flex; align-items: center; gap: 10px; }
+  .qty-btn {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 300;
+    transition: all 0.15s;
+    color: var(--text);
+  }
+  .qty-btn:hover { border-color: var(--yolk); color: var(--yolk-dark); }
+  .qty-num { font-weight: 700; font-size: 15px; min-width: 20px; text-align: center; }
+  .cart-item-price { font-weight: 700; color: var(--yolk-dark); font-size: 15px; text-align: right; min-width: 80px; }
+  .remove-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-light); transition: color 0.15s; padding: 4px; }
+  .remove-btn:hover { color: var(--danger); }
+
+  .cart-empty { text-align: center; padding: 48px 20px; color: var(--text-light); }
+  .cart-empty-emoji { font-size: 52px; display: block; margin-bottom: 12px; }
+
+  .order-summary {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: sticky;
+    top: 84px;
+  }
+  .summary-header { padding: 16px 20px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 15px; color: var(--brown); }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+  .summary-row.total {
+    border-top: 1px solid var(--border);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--brown);
+    padding: 14px 20px;
+  }
+  .summary-row.total span:last-child { color: var(--yolk-dark); }
+  .order-btn {
+    margin: 0 20px 20px;
+    width: calc(100% - 40px);
+    padding: 14px;
+    background: var(--yolk);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .order-btn:hover { background: var(--yolk-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(232,160,32,0.4); }
+  .order-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+  .delivery-info { padding: 0 20px 16px; font-size: 12px; color: var(--text-light); line-height: 1.6; }
+
+  /* ── ORDERS PAGE ── */
+  .order-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .order-id { font-size: 12px; color: var(--text-light); margin-bottom: 2px; }
+  .order-date { font-size: 13px; font-weight: 500; color: var(--text); }
+  .order-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .status-processing { background: #fff3e0; color: #e65100; }
+  .status-shipped { background: #e3f2fd; color: #1565c0; }
+  .status-delivered { background: #e8f5e9; color: #2e7d32; }
+
+  .delivery-timeline {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 14px;
+  }
+  .delivery-title { font-size: 12px; font-weight: 600; color: var(--text-mid); margin-bottom: 12px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .timeline { display: flex; align-items: center; gap: 0; }
+  .timeline-step { flex: 1; text-align: center; position: relative; }
+  .timeline-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+  }
+  .timeline-step.done:not(:last-child)::after { background: var(--yolk); }
+  .timeline-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 6px;
+    font-size: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-step.done .timeline-dot { background: var(--yolk); border-color: var(--yolk); color: white; }
+  .timeline-step.current .timeline-dot { border-color: var(--yolk); color: var(--yolk-dark); animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(232,160,32,0.4); } 50% { box-shadow: 0 0 0 6px rgba(232,160,32,0); } }
+  .timeline-label { font-size: 10px; color: var(--text-light); line-height: 1.3; }
+  .timeline-step.done .timeline-label, .timeline-step.current .timeline-label { color: var(--yolk-dark); font-weight: 600; }
+  .estimated-arrival {
+    margin-top: 12px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .arrival-icon { font-size: 22px; }
+  .arrival-text { color: var(--text-mid); }
+  .arrival-date { font-weight: 700; color: var(--yolk-dark); font-size: 15px; }
+
+  /* ── REVIEWS PAGE ── */
+  .reviews-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .review-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .review-card:hover { box-shadow: var(--shadow); }
+  .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .reviewer-info { display: flex; align-items: center; gap: 10px; }
+  .reviewer-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--yolk-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--yolk-dark);
+  }
+  .reviewer-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .review-product { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+  .stars { color: #f4c430; font-size: 15px; letter-spacing: 2px; }
+  .review-text { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
+  .review-date { font-size: 11px; color: var(--text-light); margin-top: 8px; }
+  .review-form-box {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .star-picker { display: flex; gap: 6px; margin-bottom: 8px; }
+  .star-pick {
+    font-size: 26px;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.1s;
+    line-height: 1;
+    background: none;
+    border: none;
+  }
+  .star-pick.filled, .star-pick:hover { color: #f4c430; }
+
+  /* ── MODAL / OVERLAY ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .overlay.show { display: flex; }
+  .modal {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    width: 90%;
+    max-width: 480px;
+    animation: fadeUp 0.3s ease;
+    text-align: center;
+  }
+  .modal-emoji { font-size: 52px; display: block; margin-bottom: 12px; }
+  .modal h3 { font-family: 'Noto Serif KR', serif; font-size: 22px; margin-bottom: 8px; color: var(--brown); }
+  .modal p { font-size: 14px; color: var(--text-mid); line-height: 1.7; margin-bottom: 20px; }
+  .modal-delivery {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  .modal-delivery-title { font-size: 12px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .modal-delivery-date { font-size: 22px; font-weight: 700; color: var(--yolk-dark); }
+  .modal-delivery-sub { font-size: 13px; color: var(--text-mid); margin-top: 4px; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--brown);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 300;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── STATS (admin) ── */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .stat-card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 18px;
+  }
+  .stat-label { font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .stat-value { font-size: 26px; font-weight: 700; color: var(--brown); }
+  .stat-sub { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--text-light); font-size: 14px; }
+  .empty-state-emoji { font-size: 40px; margin-bottom: 10px; display: block; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="login-egg">🥚</span>
+      <h1>계란 은행</h1>
+      <p>산지 직송 신선한 계란</p>
+    </div>
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="switchLoginTab('user')">구매자 로그인</button>
+      <button class="login-tab" onclick="switchLoginTab('admin')">관리자 로그인</button>
+    </div>
+    <div id="user-login-form">
+      <div class="form-group">
+        <label>이름</label>
+        <input type="text" id="login-name" placeholder="이름을 입력하세요" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn-primary" onclick="doLogin()">입장하기 →</button>
+    </div>
+    <div id="admin-login-form" style="display:none">
+      <div class="form-group">
+        <label>이름</label>
+        <input type="text" id="admin-name" placeholder="관리자 이름을 입력하세요" onkeydown="if(event.key==='Enter')doAdminLogin()">
+      </div>
+      <div class="form-group">
+        <label>비밀번호</label>
+        <input type="password" id="admin-password" placeholder="비밀번호를 입력하세요" onkeydown="if(event.key==='Enter')doAdminLogin()">
+      </div>
+      <button class="btn-primary" onclick="doAdminLogin()">관리자 입장 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app">
+  <div class="topbar">
+    <div class="topbar-brand">🥚 계란 은행</div>
+    <div class="topbar-right">
+      <div class="user-greeting">안녕하세요, <span id="user-name-display"></span>님</div>
+      <button class="cart-trigger" onclick="showPage('cart')">
+        🛒 장바구니 <span class="cart-badge" id="cart-badge">0</span>
+      </button>
+      <button class="logout-btn" onclick="logout()">로그아웃</button>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('shop')">🛍 쇼핑</button>
+    <button class="nav-tab" onclick="showPage('cart')">🛒 장바구니</button>
+    <button class="nav-tab" onclick="showPage('orders')">📦 내 주문</button>
+    <button class="nav-tab" onclick="showPage('reviews')">⭐ 구매후기</button>
+    <button class="nav-tab admin-only" id="admin-tab" onclick="showPage('admin')">⚙️ 상품관리</button>
+  </div>
+
+  <!-- SHOP -->
+  <div class="page active" id="page-shop">
+    <div class="shop-banner">
+      <div>
+        <h2>신선한 계란을 직접 받아보세요</h2>
+        <p>매일 아침 산란, 당일 출고로 최상의 신선함</p>
+        <div class="perks">
+          <div class="perk">🚚 3만원 이상 무료배송</div>
+          <div class="perk">📦 산지 직송</div>
+          <div class="perk">❄️ 신선도 보장</div>
+        </div>
+      </div>
+    </div>
+    <div class="category-filter" id="cat-filter"></div>
+    <div class="product-grid" id="product-grid"></div>
+  </div>
+
+  <!-- CART -->
+  <div class="page" id="page-cart">
+    <div class="cart-container">
+      <div>
+        <div class="cart-items-box">
+          <div class="cart-items-header">장바구니 상품</div>
+          <div id="cart-items-list"></div>
+        </div>
+      </div>
+      <div class="order-summary">
+        <div class="summary-header">결제 요약</div>
+        <div class="summary-row"><span>상품금액</span><span id="sum-goods">0원</span></div>
+        <div class="summary-row"><span>배송비</span><span id="sum-delivery">3,000원</span></div>
+        <div class="summary-row"><span>할인</span><span id="sum-discount" style="color:var(--success)">-0원</span></div>
+        <div class="summary-row total"><span>최종 합계</span><span id="sum-total">0원</span></div>
+        <div class="delivery-info" id="delivery-preview">🚚 3만원 이상 구매 시 무료배송 적용</div>
+        <button class="order-btn" id="order-btn" onclick="placeOrder()">주문하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div class="page" id="page-orders">
+    <div class="section-header">
+      <div class="section-title">내 주문 내역</div>
+    </div>
+    <div id="orders-list"></div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="page" id="page-reviews">
+    <div class="review-form-box">
+      <div class="section-title" style="margin-bottom:16px">후기 작성</div>
+      <div class="form-group">
+        <label>상품 선택</label>
+        <select id="review-product-select"></select>
+      </div>
+      <div class="form-group">
+        <label>별점</label>
+        <div class="star-picker" id="star-picker">
+          <button class="star-pick" onclick="setStar(1)">★</button>
+          <button class="star-pick" onclick="setStar(2)">★</button>
+          <button class="star-pick" onclick="setStar(3)">★</button>
+          <button class="star-pick" onclick="setStar(4)">★</button>
+          <button class="star-pick" onclick="setStar(5)">★</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>후기 내용</label>
+        <textarea id="review-text" rows="4" placeholder="제품을 사용해 보셨나요? 솔직한 후기를 남겨주세요!"></textarea>
+      </div>
+      <button class="btn-sm btn-yolk" onclick="submitReview()">후기 등록하기</button>
+    </div>
+    <div class="reviews-grid" id="reviews-list"></div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="page" id="page-admin">
+    <div class="admin-notice">⚙️ 상품 추가, 재고 수정, 판매 중단/재개, 주문 상태 관리를 여기서 할 수 있습니다.</div>
+
+    <div class="stats-grid" id="admin-stats"></div>
+
+    <!-- 카테고리 관리 -->
+    <div class="section-header">
+      <div class="section-title">카테고리 관리</div>
+    </div>
+    <div style="background:white;border-radius:16px;border:1px solid var(--border);padding:20px;margin-bottom:28px;">
+      <div id="cat-tag-list" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;min-height:36px;"></div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <input type="text" id="new-cat-name" placeholder="새 카테고리 이름 (예: 특란)" style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Noto Sans KR',sans-serif;outline:none;" onkeydown="if(event.key==='Enter')addCategory()" onfocus="this.style.borderColor='var(--yolk)'" onblur="this.style.borderColor='var(--border)'">
+        <button class="btn-sm btn-yolk" onclick="addCategory()">+ 추가</button>
+      </div>
+    </div>
+    <table class="admin-table" id="admin-product-table">
+      <thead>
+        <tr>
+          <th>이모지</th><th>상품명</th><th>카테고리</th><th>가격</th><th>재고</th><th>판매중</th><th>작업</th>
+        </tr>
+      </thead>
+      <tbody id="admin-table-body"></tbody>
+    </table>
+
+    <div class="section-header">
+      <div class="section-title">새 상품 추가</div>
+    </div>
+    <div class="add-product-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>상품명</label>
+          <input type="text" id="new-name" placeholder="예: 유기농 유정란 30구">
+        </div>
+        <div class="form-group">
+          <label>이모지</label>
+          <input type="text" id="new-emoji" placeholder="🥚" maxlength="2">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>상품 설명</label>
+        <input type="text" id="new-desc" placeholder="간단한 상품 설명을 입력하세요">
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>가격 (원)</label>
+          <input type="number" id="new-price" placeholder="8900">
+        </div>
+        <div class="form-group">
+          <label>재고 (개)</label>
+          <input type="number" id="new-stock" placeholder="100">
+        </div>
+        <div class="form-group">
+          <label>카테고리</label>
+          <select id="new-cat"></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>뱃지 (선택)</label>
+          <select id="new-badge">
+            <option value="">없음</option>
+            <option value="hot">인기</option>
+            <option value="new">신상</option>
+            <option value="sale">특가</option>
+            <option value="organic">유기농</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-sm btn-yolk" onclick="addProduct()">+ 상품 추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER SUCCESS MODAL -->
+<div class="overlay" id="order-modal">
+  <div class="modal">
+    <span class="modal-emoji">🎉</span>
+    <h3>주문 완료!</h3>
+    <p>주문이 정상적으로 접수되었습니다.<br>신선한 계란이 곧 출발합니다!</p>
+    <div class="modal-delivery">
+      <div class="modal-delivery-title">📅 예상 배송일</div>
+      <div class="modal-delivery-date" id="modal-arrival-date"></div>
+      <div class="modal-delivery-sub" id="modal-arrival-sub"></div>
+    </div>
+    <button class="btn-primary" onclick="closeModal();showPage('orders')">주문 내역 확인 →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+let currentUser = null;
+let isAdmin = false;
+let cart = {};
+let selectedStar = 5;
+const ADMIN_PASSWORD = '1234';
+
+let products = [];
+
+let orders = [];
+let reviews = [
+  { id:1, user:'김민지', productName:'자연방사 왕란', rating:5, text:'노른자가 정말 진하고 맛있어요. 매주 정기구독 중!', date:'2025-03-20' },
+  { id:2, user:'박준혁', productName:'동물복지 계란', rating:5, text:'배송도 빠르고 포장도 꼼꼼해서 하나도 안 깨졌어요.', date:'2025-03-22' },
+  { id:3, user:'이수진', productName:'유기농 유정란', rating:4, text:'유기농 계란 처음 먹어봤는데 확실히 다르네요!', date:'2025-03-24' },
+];
+
+// ── LOGIN ──
+function switchLoginTab(type) {
+  document.querySelectorAll('.login-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&type==='user')||(i===1&&type==='admin')));
+  document.getElementById('user-login-form').style.display = type==='user'?'block':'none';
+  document.getElementById('admin-login-form').style.display = type==='admin'?'block':'none';
+}
+
+function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  if(!name) { showToast('이름을 입력해주세요'); return; }
+  currentUser = name; isAdmin = false;
+  launchApp();
+}
+
+// 관리자 계정 목록 (이름: 비밀번호)
+const ADMIN_ACCOUNTS = {
+  '이은기': '0327',
+};
+
+function doAdminLogin() {
+  const name = document.getElementById('admin-name').value.trim();
+  const pw = document.getElementById('admin-password').value;
+  if(!name) { showToast('이름을 입력해주세요'); return; }
+  if(!pw) { showToast('비밀번호를 입력해주세요'); return; }
+  if(ADMIN_ACCOUNTS[name] !== pw) { showToast('이름 또는 비밀번호가 올바르지 않습니다'); return; }
+  currentUser = name; isAdmin = true;
+  launchApp();
+}
+
+function launchApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+  document.getElementById('user-name-display').textContent = currentUser;
+  document.getElementById('admin-tab').style.display = 'block';
+  renderCategoryFilter();
+  renderShop('all');
+  renderReviewProductSelect();
+  renderReviews();
+  if(isAdmin) { renderAdmin(); showPage('admin'); } else { showPage('shop'); }
+}
+
+function logout() {
+  currentUser = null; isAdmin = false; cart = {};
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('main-app').style.display = 'none';
+  document.getElementById('login-name').value = '';
+  document.getElementById('admin-name').value = '';
+  document.getElementById('admin-password').value = '';
+  switchLoginTab('user');
+}
+
+// ── PAGES ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const tabs = ['shop','cart','orders','reviews','admin'];
+  const idx = tabs.indexOf(id);
+  if(idx>=0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  if(id==='cart') renderCart();
+  if(id==='orders') renderOrders();
+  if(id==='admin' && isAdmin) renderAdmin();
+}
+
+// ── SHOP ──
+function renderShop(cat) {
+  const grid = document.getElementById('product-grid');
+  const filtered = cat==='all' ? products.filter(p=>p.active) : products.filter(p=>p.cat===cat&&p.active);
+  if(!filtered.length) { grid.innerHTML = '<div class="empty-state"><span class="empty-state-emoji">🥚</span>해당 카테고리 상품이 없습니다</div>'; return; }
+  grid.innerHTML = filtered.map(p => {
+    const stockText = p.stock===0 ? '<span class="product-stock out">품절</span>' : p.stock<20 ? `<span class="product-stock low">⚠️ 재고 ${p.stock}개</span>` : `<span class="product-stock">재고 ${p.stock}개</span>`;
+    const badgeHtml = p.badge ? `<span class="product-badge badge-${p.badge}">${{hot:'인기',new:'신상',sale:'특가',organic:'유기농'}[p.badge]}</span>` : '';
+    return `
+    <div class="product-card">
+      <div class="product-img">${badgeHtml}<span style="font-size:52px">${p.emoji}</span></div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        ${stockText}
+        <div class="product-footer">
+          <div class="product-price">${p.price.toLocaleString()}원</div>
+          <button class="add-cart-btn" onclick="addToCart(${p.id})" ${p.stock===0?'disabled':''}>+</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderShop(cat);
+}
+
+// ── CART ──
+function addToCart(id) {
+  const p = products.find(x=>x.id===id);
+  if(!p || p.stock===0) return;
+  cart[id] = (cart[id]||0)+1;
+  updateCartBadge();
+  showToast(`${p.emoji} ${p.name} 장바구니에 추가!`);
+}
+
+function updateCartBadge() {
+  const n = Object.values(cart).reduce((a,b)=>a+b,0);
+  document.getElementById('cart-badge').textContent = n;
+}
+
+function renderCart() {
+  const list = document.getElementById('cart-items-list');
+  const keys = Object.keys(cart).filter(k=>cart[k]>0);
+  if(!keys.length) {
+    list.innerHTML = `<div class="cart-empty"><span class="cart-empty-emoji">🛒</span>장바구니가 비어있어요<br><span style="font-size:12px;margin-top:8px;display:block">맛있는 계란을 담아보세요!</span></div>`;
+    updateSummary();
+    return;
+  }
+  list.innerHTML = keys.map(id => {
+    const p = products.find(x=>x.id==id);
+    return `
+    <div class="cart-item">
+      <div class="cart-item-emoji">${p.emoji}</div>
+      <div class="cart-item-details">
+        <div class="cart-item-name">${p.name}</div>
+        <div class="cart-item-unit">${p.price.toLocaleString()}원 / 1개</div>
+      </div>
+      <div class="qty-controls">
+        <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
+        <span class="qty-num">${cart[id]}</span>
+        <button class="qty-btn" onclick="changeQty(${id},1)">+</button>
+      </div>
+      <div class="cart-item-price">${(p.price*cart[id]).toLocaleString()}원</div>
+      <button class="remove-btn" onclick="removeFromCart(${id})" title="삭제">×</button>
+    </div>`;
+  }).join('');
+  updateSummary();
+}
+
+function changeQty(id, d) {
+  cart[id] = Math.max(0, (cart[id]||0)+d);
+  if(!cart[id]) delete cart[id];
+  updateCartBadge();
+  renderCart();
+}
+
+function removeFromCart(id) {
+  delete cart[id];
+  updateCartBadge();
+  renderCart();
+}
+
+function updateSummary() {
+  const keys = Object.keys(cart).filter(k=>cart[k]>0);
+  let goods = 0;
+  keys.forEach(id => { const p=products.find(x=>x.id==id); goods += p.price*cart[id]; });
+  const free = goods >= 30000;
+  const delivery = goods===0 ? 0 : free ? 0 : 3000;
+  const total = goods + delivery;
+  document.getElementById('sum-goods').textContent = goods.toLocaleString()+'원';
+  document.getElementById('sum-delivery').textContent = delivery===0&&goods>0 ? '<span style="color:var(--success)">무료</span>' : delivery.toLocaleString()+'원';
+  document.getElementById('sum-delivery').innerHTML = delivery===0&&goods>0 ? '<span style="color:var(--success);font-weight:600">무료 🎉</span>' : delivery.toLocaleString()+'원';
+  document.getElementById('sum-discount').textContent = '-0원';
+  document.getElementById('sum-total').textContent = total.toLocaleString()+'원';
+  const dp = document.getElementById('delivery-preview');
+  if(goods===0) dp.textContent='';
+  else if(free) dp.textContent='🎉 무료배송 적용 중!';
+  else dp.textContent=`🚚 ${(30000-goods).toLocaleString()}원 더 담으면 무료배송!`;
+  document.getElementById('order-btn').disabled = keys.length===0;
+}
+
+// ── ORDER ──
+function placeOrder() {
+  const keys = Object.keys(cart).filter(k=>cart[k]>0);
+  if(!keys.length) return;
+  const items = keys.map(id => { const p=products.find(x=>x.id==id); return {id,name:p.name,emoji:p.emoji,qty:cart[id],price:p.price}; });
+  let goods = items.reduce((s,i)=>s+i.price*i.qty,0);
+  const delivery = goods>=30000?0:3000;
+  const total = goods+delivery;
+  const now = new Date();
+  const arrival = getArrivalDate(now);
+  const order = {
+    id: 'ORD-'+Date.now().toString().slice(-6),
+    user: currentUser,
+    items, goods, delivery, total,
+    date: now.toLocaleDateString('ko-KR'),
+    orderedAt: now,
+    arrivalDate: arrival.date,
+    arrivalLabel: arrival.label,
+    status: 'processing'
+  };
+  orders.unshift(order);
+  // reduce stock
+  items.forEach(item => { const p=products.find(x=>x.id==item.id); if(p) p.stock=Math.max(0,p.stock-item.qty); });
+  cart = {};
+  updateCartBadge();
+  renderCart();
+  document.getElementById('modal-arrival-date').textContent = arrival.date;
+  document.getElementById('modal-arrival-sub').textContent = arrival.label;
+  document.getElementById('order-modal').classList.add('show');
+}
+
+function getArrivalDate(now) {
+  const h = now.getHours();
+  const d = new Date(now);
+  // 오후 2시 이전 주문: 익일 배송, 이후: 2일 후
+  const addDays = h < 14 ? 1 : 2;
+  d.setDate(d.getDate() + addDays);
+  // Skip Sunday
+  if(d.getDay()===0) d.setDate(d.getDate()+1);
+  const label = h<14 ? `오늘 오후 2시 이전 주문으로 내일 도착 예정입니다` : `오늘 오후 2시 이후 주문으로 모레 도착 예정입니다`;
+  const dateStr = d.toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'});
+  return { date: dateStr, label };
+}
+
+function closeModal() { document.getElementById('order-modal').classList.remove('show'); }
+
+// ── ORDERS PAGE ──
+function renderOrders() {
+  const list = document.getElementById('orders-list');
+  const myOrders = isAdmin ? orders : orders.filter(o=>o.user===currentUser);
+  if(!myOrders.length) { list.innerHTML='<div class="empty-state"><span class="empty-state-emoji">📦</span>아직 주문 내역이 없습니다</div>'; return; }
+  list.innerHTML = myOrders.map(o => {
+    const steps = [
+      {label:'주문접수',icon:'✓'},
+      {label:'상품준비',icon:'📦'},
+      {label:'배송중',icon:'🚚'},
+      {label:'배송완료',icon:'✓'}
+    ];
+    const statusMap = {processing:1, shipped:2, delivered:3};
+    const cur = statusMap[o.status]||1;
+    const timelineHtml = steps.map((s,i)=>{
+      const cls = i<cur?'done':i===cur?'current':'';
+      return `<div class="timeline-step ${cls}"><div class="timeline-dot">${i<cur?'✓':s.icon}</div><div class="timeline-label">${s.label}</div></div>`;
+    }).join('');
+    const statusLabel = {processing:'주문 접수',shipped:'배송 중',delivered:'배송 완료'};
+    const statusCls = {processing:'status-processing',shipped:'status-shipped',delivered:'status-delivered'};
+    return `
+    <div class="order-card">
+      <div class="order-header">
+        <div>
+          <div class="order-id">${o.id} ${isAdmin?`· ${o.user}`:''}</div>
+          <div class="order-date">${o.date} · ${o.total.toLocaleString()}원</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px">${o.items.map(i=>`${i.emoji}${i.name}×${i.qty}`).join(', ')}</div>
+        </div>
+        <span class="order-status ${statusCls[o.status]}">${statusLabel[o.status]}</span>
+      </div>
+      <div class="delivery-timeline">
+        <div class="delivery-title">배송 현황</div>
+        <div class="timeline">${timelineHtml}</div>
+        <div class="estimated-arrival">
+          <span class="arrival-icon">📅</span>
+          <div>
+            <div class="arrival-text">예상 도착일</div>
+            <div class="arrival-date">${o.arrivalDate}</div>
+            <div style="font-size:11px;color:var(--text-light)">${o.arrivalLabel}</div>
+          </div>
+        </div>
+      </div>
+      ${isAdmin?`<div style="margin-top:12px;display:flex;gap:8px">
+        <button class="btn-sm btn-outline" onclick="updateStatus('${o.id}','processing')">접수</button>
+        <button class="btn-sm btn-outline" onclick="updateStatus('${o.id}','shipped')">배송중</button>
+        <button class="btn-sm btn-yolk" onclick="updateStatus('${o.id}','delivered')">배송완료</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function updateStatus(oid, status) {
+  const o = orders.find(x=>x.id===oid);
+  if(o) { o.status=status; renderOrders(); showToast('배송 상태 업데이트 완료'); }
+}
+
+// ── REVIEWS ──
+let selectedProductForReview = '';
+function renderReviewProductSelect() {
+  const sel = document.getElementById('review-product-select');
+  sel.innerHTML = products.filter(p=>p.active).map(p=>`<option value="${p.name}">${p.emoji} ${p.name}</option>`).join('');
+}
+
+function setStar(n) {
+  selectedStar = n;
+  document.querySelectorAll('.star-pick').forEach((s,i) => s.classList.toggle('filled', i<n));
+}
+
+function submitReview() {
+  const product = document.getElementById('review-product-select').value;
+  const text = document.getElementById('review-text').value.trim();
+  if(!text) { showToast('후기 내용을 입력해주세요'); return; }
+  reviews.unshift({ id:Date.now(), user:currentUser, productName:product, rating:selectedStar, text, date:new Date().toLocaleDateString('ko-KR') });
+  document.getElementById('review-text').value='';
+  setStar(5);
+  renderReviews();
+  showToast('후기가 등록되었습니다! ⭐');
+}
+
+function renderReviews() {
+  const list = document.getElementById('reviews-list');
+  if(!reviews.length) { list.innerHTML='<div class="empty-state">아직 후기가 없습니다</div>'; return; }
+  list.innerHTML = reviews.map(r => {
+    const stars = '★'.repeat(r.rating)+'☆'.repeat(5-r.rating);
+    const initials = r.user.charAt(0);
+    return `
+    <div class="review-card">
+      <div class="review-header">
+        <div class="reviewer-info">
+          <div class="reviewer-avatar">${initials}</div>
+          <div>
+            <div class="reviewer-name">${r.user}</div>
+            <div class="review-product">${r.productName}</div>
+          </div>
+        </div>
+        <div class="stars">${stars}</div>
+      </div>
+      <div class="review-text">${r.text}</div>
+      <div class="review-date">${r.date}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── CATEGORIES ──
+let categories = []; // { id, name }
+
+function renderCategoryFilter() {
+  const filter = document.getElementById('cat-filter');
+  filter.innerHTML = `<button class="cat-btn active" onclick="filterProducts('all',this)">전체</button>`
+    + categories.map(c => `<button class="cat-btn" onclick="filterProducts('${c.id}',this)">${c.name}</button>`).join('');
+}
+
+function renderCategoryTags() {
+  const list = document.getElementById('cat-tag-list');
+  if (!categories.length) {
+    list.innerHTML = '<span style="font-size:13px;color:var(--text-light)">아직 카테고리가 없습니다. 아래에서 추가하세요.</span>';
+    return;
+  }
+  list.innerHTML = categories.map(c => `
+    <span style="display:inline-flex;align-items:center;gap:6px;background:var(--yolk-light);color:var(--yolk-dark);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:13px;font-weight:500;">
+      ${c.name}
+      <button onclick="deleteCategory('${c.id}')" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--yolk-dark);padding:0;line-height:1;opacity:0.6;" title="삭제">×</button>
+    </span>`).join('');
+}
+
+function renderCategorySelect() {
+  const sel = document.getElementById('new-cat');
+  if (!sel) return;
+  sel.innerHTML = categories.length
+    ? categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('')
+    : '<option value="">— 카테고리를 먼저 추가하세요 —</option>';
+}
+
+function addCategory() {
+  const input = document.getElementById('new-cat-name');
+  const name = input.value.trim();
+  if (!name) { showToast('카테고리 이름을 입력해주세요'); return; }
+  if (categories.find(c => c.name === name)) { showToast('이미 존재하는 카테고리입니다'); return; }
+  const id = 'cat_' + Date.now();
+  categories.push({ id, name });
+  input.value = '';
+  renderCategoryTags();
+  renderCategoryFilter();
+  renderCategorySelect();
+  showToast(`"${name}" 카테고리가 추가되었습니다`);
+}
+
+function deleteCategory(id) {
+  const cat = categories.find(c => c.id === id);
+  if (!cat) return;
+  const inUse = products.some(p => p.cat === id);
+  if (inUse && !confirm(`"${cat.name}" 카테고리를 사용 중인 상품이 있습니다. 그래도 삭제할까요?`)) return;
+  categories = categories.filter(c => c.id !== id);
+  renderCategoryTags();
+  renderCategoryFilter();
+  renderCategorySelect();
+  renderAdmin();
+  renderShop('all');
+  showToast(`"${cat.name}" 카테고리가 삭제되었습니다`);
+}
+
+// ── ADMIN ──
+function renderAdmin() {
+  // stats
+  const totalOrders = orders.length;
+  const totalRevenue = orders.reduce((s,o)=>s+o.total,0);
+  const totalProducts = products.filter(p=>p.active).length;
+  const outOfStock = products.filter(p=>p.stock===0).length;
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">전체 주문</div><div class="stat-value">${totalOrders}</div><div class="stat-sub">건</div></div>
+    <div class="stat-card"><div class="stat-label">총 매출</div><div class="stat-value">${totalRevenue.toLocaleString()}</div><div class="stat-sub">원</div></div>
+    <div class="stat-card"><div class="stat-label">판매 상품</div><div class="stat-value">${totalProducts}</div><div class="stat-sub">종류</div></div>
+    <div class="stat-card"><div class="stat-label">품절 상품</div><div class="stat-value">${outOfStock}</div><div class="stat-sub">종류</div></div>
+    <div class="stat-card"><div class="stat-label">구매후기</div><div class="stat-value">${reviews.length}</div><div class="stat-sub">건</div></div>
+  `;
+  renderCategoryTags();
+  renderCategorySelect();
+  // table
+  document.getElementById('admin-table-body').innerHTML = products.length ? products.map(p => {
+    const catName = (categories.find(c=>c.id===p.cat)||{name:p.cat}).name;
+    return `
+    <tr>
+      <td style="font-size:22px">${p.emoji}</td>
+      <td><strong>${p.name}</strong><br><span style="font-size:11px;color:var(--text-light)">${p.desc}</span></td>
+      <td><span style="font-size:12px;background:var(--yolk-light);color:var(--yolk-dark);padding:3px 8px;border-radius:6px">${catName}</span></td>
+      <td>${p.price.toLocaleString()}원</td>
+      <td><input class="stock-input" type="number" value="${p.stock}" min="0" onchange="updateStock(${p.id},this.value)" /></td>
+      <td>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="checkbox" ${p.active?'checked':''} onchange="toggleProduct(${p.id},this.checked)" style="width:16px;height:16px;accent-color:var(--yolk)">
+          <span style="font-size:12px">${p.active?'판매중':'중단'}</span>
+        </label>
+      </td>
+      <td>
+        <button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">삭제</button>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-light);font-size:13px">등록된 상품이 없습니다</td></tr>';
+}
+
+function updateStock(id, val) {
+  const p = products.find(x=>x.id===id);
+  if(p) { p.stock=parseInt(val)||0; renderShop('all'); showToast('재고 업데이트 완료'); }
+}
+
+function toggleProduct(id, active) {
+  const p = products.find(x=>x.id===id);
+  if(p) { p.active=active; renderAdmin(); renderShop('all'); showToast(active?'판매 재개됨':'판매 중단됨'); }
+}
+
+function deleteProduct(id) {
+  if(!confirm('정말 삭제하시겠습니까?')) return;
+  products = products.filter(x=>x.id!==id);
+  renderAdmin(); renderShop('all');
+  renderReviewProductSelect();
+  showToast('상품이 삭제되었습니다');
+}
+
+function addProduct() {
+  const name = document.getElementById('new-name').value.trim();
+  const emoji = document.getElementById('new-emoji').value.trim()||'🥚';
+  const desc = document.getElementById('new-desc').value.trim();
+  const price = parseInt(document.getElementById('new-price').value)||0;
+  const stock = parseInt(document.getElementById('new-stock').value)||0;
+  const cat = document.getElementById('new-cat').value;
+  const badge = document.getElementById('new-badge').value;
+  if(!name||!price) { showToast('상품명과 가격을 입력해주세요'); return; }
+  products.push({ id:Date.now(), name, emoji, desc, price, stock, cat, badge, active:true });
+  document.getElementById('new-name').value='';
+  document.getElementById('new-desc').value='';
+  document.getElementById('new-price').value='';
+  document.getElementById('new-stock').value='';
+  renderAdmin(); renderShop('all'); renderReviewProductSelect();
+  showToast('새 상품이 추가되었습니다! ✓');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// init star picker
+setStar(5);
+</script>
+</body>
+</html>
